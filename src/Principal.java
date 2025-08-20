@@ -1,10 +1,10 @@
 import model.Funcionario;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.Period;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -114,13 +114,47 @@ public class Principal {
             }
         }
 
-        //Não consegui imprimir apenas o nome e a data de nascimento, está impriminto todas as informações, mas está filtrado pelo mês.
-        List<Funcionario> aniversariantes = funcionarios.stream()
-            .filter(f -> {
-                int mes = f.getDataNascimento().getMonthValue();
-                return mes == 10 || mes == 12;
-            })
-            .toList();
-        aniversariantes.forEach(System.out::println);
+        //Imprime aniversariantes.
+        System.out.println("\n---- Funcionários que Fazem Aniversário nos meses 10 e 12 ----\n");
+        funcionarios.stream()
+                .filter(f -> {
+                    int mes = f.getDataNascimento().getMonthValue();
+                    return mes == 10 || mes == 12;
+                })
+                .forEach(f -> System.out.println(f.getNome() + " - " + f.getDataNascimento()));
+
+        // Imprime o funcionário mais velho.
+        System.out.println("\n---- Funcionário mais Velho ----\n");
+        Funcionario maisVelho = funcionarios.stream()
+                .max(Comparator.comparing(f -> Period.between(f.getDataNascimento(), LocalDate.now()).getYears()))
+                .orElse(null);
+        if (maisVelho != null) {
+            int idade = Period.between(maisVelho.getDataNascimento(), LocalDate.now()).getYears();
+            System.out.println(maisVelho.getNome() + " - " + idade);
+        }
+
+        //Imprime na ordem alfabética.
+        System.out.println("\n---- Ordem Alfabética ----\n");
+        funcionarios.sort(Comparator.comparing(Funcionario::getNome));
+        funcionarios.forEach(f -> System.out.println(f.getNome()));
+
+        //Imprime o total dos salários.
+        System.out.println("\n---- Total dos Salários ----\n");
+        BigDecimal total = funcionarios.stream()
+                .map(Funcionario::getSalario)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println("R$ " + total);
+
+        // Imprime a quantidade de salários minimos com base em R$1.212,00.
+        System.out.println("\n---- Quantidade de Salários Mínimos ----\n");
+        BigDecimal salarioMinimo = new BigDecimal("1212.00");
+        funcionarios.forEach(f -> {
+            BigDecimal quantidadeSalarios = f.getSalario().divide(salarioMinimo, 2, RoundingMode.HALF_UP);
+            System.out.println(f.getNome() + " - " + quantidadeSalarios + " salários.");
+        });
     }
 }
+
+          /* Tive uma certa dificuldade com Map e Stream, não lembrava de todas das funções para definir o uso,
+          * precisei fazer uma breve revisão em algumas anotações e códigos que já tinha feito para utilizar como exemplo,
+          * algumas funções não tinha estudado até agora, tive que aprender a utilizar. */

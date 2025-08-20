@@ -34,7 +34,7 @@ public class Funcionario extends Pessoa{
 
     @Override
     public String toString() {
-        NumberFormat formatado = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));  // Formatação com . e ,
+        NumberFormat formatado = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));  // Formatação para o valor.
         return super.toString() + ", Salário: " + formatado.format(salario) + ", Função: " + funcao;
     }
 }
