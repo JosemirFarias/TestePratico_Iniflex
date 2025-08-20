@@ -24,7 +24,7 @@ O objetivo é trabalhar com conceitos de **POO (Programação Orientada a Objeto
 ---
 
 ## 🛠️ Tecnologias Utilizadas
-- **Java 21**
+- **JDK 21**
 - **Paradigma de Programação Orientada a Objetos**
 - **API de Datas (LocalDate, Period, DateTimeFormatter)**
 - **Streams e Lambda Expressions**
