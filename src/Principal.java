@@ -2,6 +2,7 @@ import model.Funcionario;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -130,7 +131,7 @@ public class Principal {
                 .orElse(null);
         if (maisVelho != null) {
             int idade = Period.between(maisVelho.getDataNascimento(), LocalDate.now()).getYears();
-            System.out.println(maisVelho.getNome() + " - " + idade);
+            System.out.println("Nome: " + maisVelho.getNome() + " - " + idade + " anos");
         }
 
         //Imprime na ordem alfabética.
@@ -143,7 +144,9 @@ public class Principal {
         BigDecimal total = funcionarios.stream()
                 .map(Funcionario::getSalario)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println("R$ " + total);
+
+        NumberFormat formatado = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("pt-BR"));
+        System.out.println(formatado.format(total));
 
         // Imprime a quantidade de salários minimos com base em R$1.212,00.
         System.out.println("\n---- Quantidade de Salários Mínimos ----\n");
@@ -154,7 +157,3 @@ public class Principal {
         });
     }
 }
-
-          /* Tive uma certa dificuldade com Map e Stream, não lembrava de todas das funções para definir o uso,
-          * precisei fazer uma breve revisão em algumas anotações e códigos que já tinha feito para utilizar como exemplo,
-          * algumas funções não tinha estudado até agora, tive que aprender a utilizar. */
